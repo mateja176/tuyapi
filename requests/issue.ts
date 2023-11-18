@@ -5,8 +5,13 @@ if (!access_token) {
   throw new Error('ACCESS_TOKEN is not defined');
 }
 
+const virtualId = process.env.VIRTUAL_ID;
+if (!virtualId) {
+  throw new Error('VIRTUAL_ID is not defined');
+}
+
 const modes = ['white', 'colour', 'scene', 'music'] as const;
-type Mode = typeof modes[number];
+type Mode = (typeof modes)[number];
 const mode = process.env.MODE;
 if (mode && !modes.includes(mode as Mode)) {
   throw new Error(`MODE must be one of ${JSON.stringify(modes)}`);
@@ -52,7 +57,7 @@ if (
 tuyapi({
   method: 'POST',
   version: 2,
-  pathname: `/cloud/thing/${process.env.VIRTUAL_ID}/shadow/properties/issue`,
+  pathname: `/cloud/thing/${virtualId}/shadow/properties/issue`,
   headers: {
     access_token,
   },
